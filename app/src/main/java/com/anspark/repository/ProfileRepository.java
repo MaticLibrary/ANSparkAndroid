@@ -9,6 +9,11 @@ import com.anspark.models.Profile;
 import com.anspark.utils.Constants;
 import com.anspark.utils.MockData;
 
+import java.io.File;
+
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -66,13 +71,18 @@ public class ProfileRepository {
         });
     }
 
-    public void uploadPhoto(Photo photo, RepositoryCallback<Photo> callback) {
+    public void uploadPhoto(File photoFile, RepositoryCallback<Photo> callback) {
         if (Constants.USE_MOCK_DATA) {
+            Photo photo = new Photo();
+            photo.setUrl("mock://photo");
             callback.onSuccess(photo);
             return;
         }
 
-        api.uploadPhoto(photo).enqueue(new Callback<Photo>() {
+        RequestBody requestBody = RequestBody.create(photoFile, MediaType.parse("image/*"));
+        MultipartBody.Part filePart = MultipartBody.Part.createFormData("file", photoFile.getName(), requestBody);
+
+        api.uploadPhoto(filePart).enqueue(new Callback<Photo>() {
             @Override
             public void onResponse(Call<Photo> call, Response<Photo> response) {
                 if (response.isSuccessful() && response.body() != null) {

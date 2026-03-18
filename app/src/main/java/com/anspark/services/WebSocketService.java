@@ -8,12 +8,11 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.WebSocket;
 import okhttp3.WebSocketListener;
-import okhttp3.internal.ws.WebSocketProtocol;
 
 public class WebSocketService {
     private static final String TAG = "WebSocketService";
     
-    public interface WebSocketListener {
+    public interface SocketListener {
         void onConnected();
         void onMessage(String message);
         void onClosed();
@@ -21,7 +20,7 @@ public class WebSocketService {
     }
 
     private WebSocket webSocket;
-    private WebSocketListener listener;
+    private SocketListener listener;
     private final OkHttpClient client;
     private final Gson gson;
 
@@ -32,7 +31,7 @@ public class WebSocketService {
         this.gson = new Gson();
     }
 
-    public void connect(String url, WebSocketListener listener) {
+    public void connect(String url, SocketListener listener) {
         this.listener = listener;
         
         Request request = new Request.Builder()
@@ -43,14 +42,13 @@ public class WebSocketService {
                 .header("Upgrade", "websocket")
                 .build();
 
-        webSocket = client.newWebSocket(request, new okhttp3.WebSocketListener() {
+        webSocket = client.newWebSocket(request, new WebSocketListener() {
             @Override
             public void onOpen(WebSocket webSocket, okhttp3.Response response) {
                 Log.d(TAG, "WebSocket Connected");
                 if (listener != null) {
                     listener.onConnected();
                 }
-                // Wysyłaj STOMP CONNECT ramkę
                 sendStompFrame("CONNECT\naccept-version:1.0,1.1,1.2\nheart-beat:0,0\n\n\0");
             }
 
@@ -60,11 +58,6 @@ public class WebSocketService {
                 if (listener != null) {
                     listener.onMessage(text);
                 }
-            }
-
-            @Override
-            public void onMessage(WebSocket webSocket, okhttp3.ByteString bytes) {
-                Log.d(TAG, "Binary message received");
             }
 
             @Override

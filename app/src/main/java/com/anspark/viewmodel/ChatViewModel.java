@@ -52,7 +52,7 @@ public class ChatViewModel extends AndroidViewModel {
         });
     }
 
-    public void loadMessages(String chatId) {
+    public void loadMessages(Long chatId) {
         repository.getMessages(chatId, new RepositoryCallback<List<Message>>() {
             @Override
             public void onSuccess(List<Message> data) {
@@ -66,7 +66,7 @@ public class ChatViewModel extends AndroidViewModel {
         });
     }
 
-    public void sendMessage(String chatId, String text) {
+    public void sendMessage(Long chatId, String text) {
         repository.sendMessage(chatId, text, new RepositoryCallback<Message>() {
             @Override
             public void onSuccess(Message data) {

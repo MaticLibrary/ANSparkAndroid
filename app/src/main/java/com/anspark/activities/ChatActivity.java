@@ -21,7 +21,7 @@ public class ChatActivity extends AppCompatActivity {
     private MessagesAdapter adapter;
     private LinearLayoutManager layoutManager;
     private ChatViewModel viewModel;
-    private String chatId;
+    private Long chatId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,9 +35,15 @@ public class ChatActivity extends AppCompatActivity {
         RecyclerView messagesList = findViewById(R.id.messagesList);
 
         String name = getIntent().getStringExtra("chat_name");
-        chatId = getIntent().getStringExtra("chat_id");
-        if (chatId == null || chatId.isEmpty()) {
-            chatId = "chat_mock";
+        String chatIdStr = getIntent().getStringExtra("chat_id");
+        if (chatIdStr == null || chatIdStr.isEmpty()) {
+            chatId = 0L;  // Default mock ID
+        } else {
+            try {
+                chatId = Long.parseLong(chatIdStr);
+            } catch (NumberFormatException e) {
+                chatId = 0L;
+            }
         }
         if (name == null || name.isEmpty()) {
             name = "Maja, 24";

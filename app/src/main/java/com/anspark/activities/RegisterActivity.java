@@ -69,12 +69,17 @@ public class RegisterActivity extends AppCompatActivity {
             } catch (NumberFormatException ignored) {
             }
 
+            String birthDate = "2000-01-01";
+            String gender = "MALE";
+            String preference = "WOMEN";
+
             RegisterRequest request = new RegisterRequest(
-                    pendingName,
-                    ageValue,
-                    emailInput.getText().toString().trim(),
-                    passwordInput.getText().toString().trim(),
-                    cityInput.getText().toString().trim()
+                    emailInput.getText().toString().trim(),      // email
+                    passwordInput.getText().toString().trim(),   // password
+                    pendingName,                                   // displayName
+                    birthDate,                                     // birthDate
+                    gender,                                         // gender
+                    preference                                      // preference
             );
 
             viewModel.register(request);

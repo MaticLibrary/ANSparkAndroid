@@ -2,24 +2,19 @@ package com.anspark.api;
 
 import com.anspark.models.Photo;
 import com.anspark.models.Profile;
-
 import okhttp3.MultipartBody;
 import retrofit2.Call;
-import retrofit2.http.Body;
-import retrofit2.http.GET;
-import retrofit2.http.Multipart;
-import retrofit2.http.POST;
-import retrofit2.http.PUT;
-import retrofit2.http.Part;
+import retrofit2.http.*;
 
 public interface ProfileApi {
-    @GET("profile/me")
+
+    @GET("api/v1/profile/me")
     Call<Profile> getMyProfile();
 
-    @PUT("profile/me")
+    @PUT("api/v1/profile/me")
     Call<Profile> updateProfile(@Body Profile profile);
 
     @Multipart
-    @POST("profile/me/photo")
+    @POST("api/v1/profile/me/photo")
     Call<Photo> uploadPhoto(@Part MultipartBody.Part file);
 }

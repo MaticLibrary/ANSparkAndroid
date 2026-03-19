@@ -3,69 +3,51 @@ package com.anspark.models;
 import com.google.gson.annotations.SerializedName;
 
 public class RegisterRequest {
-    @SerializedName("name")
-    private String name;
-
-    @SerializedName("age")
-    private int age;
-
     @SerializedName("email")
     private String email;
 
     @SerializedName("password")
     private String password;
 
-    @SerializedName("city")
-    private String city;
+    @SerializedName("displayName")
+    private String displayName;
 
-    public RegisterRequest() {
-    }
+    @SerializedName("birthDate")
+    private String birthDate;
 
-    public RegisterRequest(String name, int age, String email, String password, String city) {
-        this.name = name;
-        this.age = age;
+    @SerializedName("gender")
+    private String gender;
+
+    @SerializedName("preference")
+    private String preference;
+
+    // Конструктор
+    public RegisterRequest(String email, String password, String displayName,
+                           String birthDate, String gender, String preference) {
         this.email = email;
         this.password = password;
-        this.city = city;
+        this.displayName = displayName;
+        this.birthDate = birthDate;
+        this.gender = gender;
+        this.preference = preference;
     }
 
-    public String getName() {
-        return name;
-    }
+    // Гетери та сетери
+    public String getEmail() { return email; }
+    public void setEmail(String email) { this.email = email; }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+    public String getPassword() { return password; }
+    public void setPassword(String password) { this.password = password; }
 
-    public int getAge() {
-        return age;
-    }
+    public String getDisplayName() { return displayName; }
+    public void setDisplayName(String displayName) { this.displayName = displayName; }
 
-    public void setAge(int age) {
-        this.age = age;
-    }
+    public String getBirthDate() { return birthDate; }
+    public void setBirthDate(String birthDate) { this.birthDate = birthDate; }
 
-    public String getEmail() {
-        return email;
-    }
+    public String getGender() { return gender; }
+    public void setGender(String gender) { this.gender = gender; }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getCity() {
-        return city;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
+    public String getPreference() { return preference; }
+    public void setPreference(String preference) { this.preference = preference; }
 }

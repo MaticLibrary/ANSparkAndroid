@@ -85,12 +85,13 @@ public class AuthRepository {
             return;
         }
 
-        if (response.getAccessToken() != null) {
-            sessionManager.saveAuthTokens(response.getAccessToken(), response.getRefreshToken());
+        if (response.getToken() != null) {
+            sessionManager.saveAuthTokens(response.getToken(), null);
         }
 
-        if (response.getUser() != null) {
-            sessionManager.saveUserId(response.getUser().getId());
+        // ← ВИПРАВЛЕНО: getUser() → getUserId()
+        if (response.getUserId() != null) {
+            sessionManager.saveUserId(response.getUserId());
         }
     }
 }

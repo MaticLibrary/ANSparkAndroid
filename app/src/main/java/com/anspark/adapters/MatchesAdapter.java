@@ -39,7 +39,10 @@ public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.MatchVie
     public void onBindViewHolder(@NonNull MatchViewHolder holder, int position) {
         Match match = items.get(position);
         Profile profile = match.getProfile();
-        String name = profile != null ? profile.getName() : "Match";
+
+        // ← ВИПРАВЛЕНО: getName() → getDisplayName()
+        String name = profile != null ? profile.getDisplayName() : "Match";
+
         if (profile != null && profile.getAge() > 0) {
             name = name + ", " + profile.getAge();
         }

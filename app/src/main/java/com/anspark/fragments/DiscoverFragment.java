@@ -59,7 +59,8 @@ public class DiscoverFragment extends Fragment {
             return;
         }
 
-        String name = profile.getName() != null ? profile.getName() : "Profil";
+        // ← ВИПРАВЛЕНО: getName() → getDisplayName()
+        String name = profile.getDisplayName() != null ? profile.getDisplayName() : "Profil";
         if (profile.getAge() > 0) {
             name = name + ", " + profile.getAge();
         }
@@ -68,7 +69,7 @@ public class DiscoverFragment extends Fragment {
         String bio = profile.getBio() != null ? profile.getBio() : "";
         profileDescription.setText(bio);
 
-        String seed = profile.getId() != null ? profile.getId() : profile.getName();
+        String seed = profile.getId() != null ? profile.getId().toString() : profile.getDisplayName();
         profileImage.setImageResource(ImageUtils.pickDiscoverPlaceholder(seed));
     }
 }

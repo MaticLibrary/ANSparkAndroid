@@ -1,15 +1,23 @@
 package com.anspark.models;
 
 import com.google.gson.annotations.SerializedName;
-
 import java.util.List;
 
 public class Profile {
     @SerializedName("id")
-    private String id;
+    private Long id;
 
-    @SerializedName("name")
-    private String name;
+    @SerializedName("displayName")
+    private String displayName;
+
+    @SerializedName("birthDate")
+    private String birthDate;
+
+    @SerializedName("gender")
+    private String gender;
+
+    @SerializedName("preference")
+    private String preference;
 
     @SerializedName("age")
     private int age;
@@ -20,68 +28,46 @@ public class Profile {
     @SerializedName("city")
     private String city;
 
-    @SerializedName("tags")
-    private List<String> tags;
+    @SerializedName("avatarUrl")
+    private String avatarUrl;
 
     @SerializedName("photos")
     private List<Photo> photos;
 
-    public Profile() {
-    }
+    @SerializedName("tags")
+    private List<String> tags;
 
-    public String getId() {
-        return id;
-    }
+    public List<String> getTags() { return tags; }
+    public void setTags(List<String> tags) { this.tags = tags; }
 
-    public void setId(String id) {
-        this.id = id;
-    }
 
-    public String getName() {
-        return name;
-    }
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+    public String getDisplayName() { return displayName; }
+    public void setDisplayName(String displayName) { this.displayName = displayName; }
 
-    public int getAge() {
-        return age;
-    }
+    public String getBirthDate() { return birthDate; }
+    public void setBirthDate(String birthDate) { this.birthDate = birthDate; }
 
-    public void setAge(int age) {
-        this.age = age;
-    }
+    public String getGender() { return gender; }
+    public void setGender(String gender) { this.gender = gender; }
 
-    public String getBio() {
-        return bio;
-    }
+    public String getPreference() { return preference; }
+    public void setPreference(String preference) { this.preference = preference; }
 
-    public void setBio(String bio) {
-        this.bio = bio;
-    }
+    public int getAge() { return age; }
+    public void setAge(int age) { this.age = age; }
 
-    public String getCity() {
-        return city;
-    }
+    public String getBio() { return bio; }
+    public void setBio(String bio) { this.bio = bio; }
 
-    public void setCity(String city) {
-        this.city = city;
-    }
+    public String getCity() { return city; }
+    public void setCity(String city) { this.city = city; }
 
-    public List<String> getTags() {
-        return tags;
-    }
+    public String getAvatarUrl() { return avatarUrl; }
+    public void setAvatarUrl(String avatarUrl) { this.avatarUrl = avatarUrl; }
 
-    public void setTags(List<String> tags) {
-        this.tags = tags;
-    }
-
-    public List<Photo> getPhotos() {
-        return photos;
-    }
-
-    public void setPhotos(List<Photo> photos) {
-        this.photos = photos;
-    }
+    public List<Photo> getPhotos() { return photos; }
+    public void setPhotos(List<Photo> photos) { this.photos = photos; }
 }

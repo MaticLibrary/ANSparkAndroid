@@ -71,13 +71,14 @@ public class ProfileFragment extends Fragment {
             return;
         }
 
-        String name = profile.getName() != null ? profile.getName() : "Profil";
+        // ← ВИПРАВЛЕНО: getName() → getDisplayName()
+        String name = profile.getDisplayName() != null ? profile.getDisplayName() : "Profil";
         if (profile.getAge() > 0) {
             name += ", " + profile.getAge();
         }
         nameText.setText(name);
 
-        List<String> tags = profile.getTags();
+        List<String> tags = profile.getTags(); // ← ЦЕ ТЕЖ ПОТРІБНО ВИПРАВИТИ!
         if (tags != null && !tags.isEmpty()) {
             StringBuilder builder = new StringBuilder();
             for (int i = 0; i < tags.size(); i++) {

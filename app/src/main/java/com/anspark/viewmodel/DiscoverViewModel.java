@@ -15,6 +15,7 @@ import com.anspark.repository.RepositoryCallback;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class DiscoverViewModel extends AndroidViewModel {
     private final DiscoverRepository discoverRepository;
@@ -71,23 +72,30 @@ public class DiscoverViewModel extends AndroidViewModel {
         currentProfile.setValue(list.get(index));
     }
 
+    // ← ВИПРАВЛЕНО: використовуємо like() замість sendDecision()
     public void sendDecision(boolean liked) {
         Profile profile = currentProfile.getValue();
         if (profile == null) {
             return;
         }
 
-        matchRepository.sendDecision(profile, liked, new RepositoryCallback<Match>() {
-            @Override
-            public void onSuccess(Match data) {
-                nextProfile();
-            }
+        if (liked) {
+            // Якщо лайк - викликаємо like()
+            matchRepository.like(profile, new RepositoryCallback<Map<String, Object>>() {
+                @Override
+                public void onSuccess(Map<String, Object> data) {
+                    nextProfile();
+                }
 
-            @Override
-            public void onError(String message) {
-                error.postValue(message);
-                nextProfile();
-            }
-        });
+                @Override
+                public void onError(String message) {
+                    error.postValue(message);
+                    nextProfile();
+                }
+            });
+        } else {
+            // Якщо дізлайк - просто переходимо до наступного
+            nextProfile();
+        }
     }
 }

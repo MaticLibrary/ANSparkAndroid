@@ -13,14 +13,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.anspark.R;
 import com.anspark.adapters.MessagesAdapter;
-import com.anspark.viewmodel.ChatViewModel;
+import com.anspark.viewmodel.MessageViewModel;  // ← ВИПРАВЛЕНО!
 import com.google.android.material.button.MaterialButton;
 
 public class ChatActivity extends AppCompatActivity {
 
     private MessagesAdapter adapter;
     private LinearLayoutManager layoutManager;
-    private ChatViewModel viewModel;
+    private MessageViewModel viewModel;  // ← ВИПРАВЛЕНО!
     private Long chatId;
 
     @Override
@@ -37,7 +37,7 @@ public class ChatActivity extends AppCompatActivity {
         String name = getIntent().getStringExtra("chat_name");
         String chatIdStr = getIntent().getStringExtra("chat_id");
         if (chatIdStr == null || chatIdStr.isEmpty()) {
-            chatId = 0L;  // Default mock ID
+            chatId = 0L;
         } else {
             try {
                 chatId = Long.parseLong(chatIdStr);
@@ -57,13 +57,15 @@ public class ChatActivity extends AppCompatActivity {
         adapter = new MessagesAdapter();
         messagesList.setAdapter(adapter);
 
-        viewModel = new ViewModelProvider(this).get(ChatViewModel.class);
+        viewModel = new ViewModelProvider(this).get(MessageViewModel.class);  // ← ВИПРАВЛЕНО!
+
         viewModel.getMessages().observe(this, messages -> {
             adapter.submitList(messages);
             if (messages != null && !messages.isEmpty()) {
                 messagesList.scrollToPosition(messages.size() - 1);
             }
         });
+
         viewModel.getError().observe(this, message -> {
             if (message != null) {
                 Toast.makeText(this, message, Toast.LENGTH_SHORT).show();

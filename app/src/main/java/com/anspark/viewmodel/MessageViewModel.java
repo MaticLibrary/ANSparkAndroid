@@ -7,7 +7,6 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import com.anspark.models.Chat;
 import com.anspark.models.Message;
 import com.anspark.repository.ChatRepository;
 import com.anspark.repository.RepositoryCallback;
@@ -15,19 +14,14 @@ import com.anspark.repository.RepositoryCallback;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ChatViewModel extends AndroidViewModel {
+public class MessageViewModel extends AndroidViewModel {
     private final ChatRepository repository;
-    private final MutableLiveData<List<Chat>> chats = new MutableLiveData<>(new ArrayList<>());
     private final MutableLiveData<List<Message>> messages = new MutableLiveData<>(new ArrayList<>());
     private final MutableLiveData<String> error = new MutableLiveData<>();
 
-    public ChatViewModel(@NonNull Application application) {
+    public MessageViewModel(@NonNull Application application) {
         super(application);
         this.repository = new ChatRepository(application);
-    }
-
-    public LiveData<List<Chat>> getChats() {
-        return chats;
     }
 
     public LiveData<List<Message>> getMessages() {
@@ -38,22 +32,8 @@ public class ChatViewModel extends AndroidViewModel {
         return error;
     }
 
-    public void loadChats() {
-        repository.getChats(new RepositoryCallback<List<Chat>>() {
-            @Override
-            public void onSuccess(List<Chat> data) {
-                chats.postValue(data);
-            }
-
-            @Override
-            public void onError(String message) {
-                error.postValue(message);
-            }
-        });
-    }
-
-    public void loadMessages(Long chatId) {
-        repository.getMessages(chatId, new RepositoryCallback<List<Message>>() {
+    public void loadMessages(Long matchId) {
+        repository.getMessages(matchId, new RepositoryCallback<List<Message>>() {
             @Override
             public void onSuccess(List<Message> data) {
                 messages.postValue(data);
@@ -66,8 +46,8 @@ public class ChatViewModel extends AndroidViewModel {
         });
     }
 
-    public void sendMessage(Long chatId, String text) {
-        repository.sendMessage(chatId, text, new RepositoryCallback<Message>() {
+    public void sendMessage(Long matchId, String text) {
+        repository.sendMessage(matchId, text, new RepositoryCallback<Message>() {
             @Override
             public void onSuccess(Message data) {
                 List<Message> current = messages.getValue();

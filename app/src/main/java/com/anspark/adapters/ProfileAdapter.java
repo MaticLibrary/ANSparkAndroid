@@ -35,7 +35,10 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.ProfileV
     @Override
     public void onBindViewHolder(@NonNull ProfileViewHolder holder, int position) {
         Profile profile = items.get(position);
-        String name = profile.getName() != null ? profile.getName() : "Profil";
+
+        // ← ВИПРАВЛЕНО: getName() → getDisplayName()
+        String name = profile.getDisplayName() != null ? profile.getDisplayName() : "Profil";
+
         if (profile.getAge() > 0) {
             name += ", " + profile.getAge();
         }

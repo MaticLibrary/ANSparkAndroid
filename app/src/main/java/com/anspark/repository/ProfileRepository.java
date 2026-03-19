@@ -37,13 +37,13 @@ public class ProfileRepository {
                 if (response.isSuccessful() && response.body() != null) {
                     callback.onSuccess(response.body());
                 } else {
-                    callback.onError("Nie udalo sie pobrac profilu");
+                    callback.onError("Nie udało się pobrać profilu");
                 }
             }
 
             @Override
             public void onFailure(Call<Profile> call, Throwable t) {
-                callback.onError(t.getMessage() != null ? t.getMessage() : "Blad sieci");
+                callback.onError(t.getMessage() != null ? t.getMessage() : "Błąd sieci");
             }
         });
     }
@@ -60,18 +60,19 @@ public class ProfileRepository {
                 if (response.isSuccessful() && response.body() != null) {
                     callback.onSuccess(response.body());
                 } else {
-                    callback.onError("Nie udalo sie zapisac profilu");
+                    callback.onError("Nie udało się zapisać profilu");
                 }
             }
 
             @Override
             public void onFailure(Call<Profile> call, Throwable t) {
-                callback.onError(t.getMessage() != null ? t.getMessage() : "Blad sieci");
+                callback.onError(t.getMessage() != null ? t.getMessage() : "Błąd sieci");
             }
         });
     }
 
-    public void uploadPhoto(File photoFile, RepositoryCallback<Photo> callback) {
+    // ← ДОДАНО метод для завантаження фото
+    public void uploadPhoto(MultipartBody.Part filePart, RepositoryCallback<Photo> callback) {
         if (Constants.USE_MOCK_DATA) {
             Photo photo = new Photo();
             photo.setUrl("mock://photo");
@@ -79,22 +80,19 @@ public class ProfileRepository {
             return;
         }
 
-        RequestBody requestBody = RequestBody.create(photoFile, MediaType.parse("image/*"));
-        MultipartBody.Part filePart = MultipartBody.Part.createFormData("file", photoFile.getName(), requestBody);
-
         api.uploadPhoto(filePart).enqueue(new Callback<Photo>() {
             @Override
             public void onResponse(Call<Photo> call, Response<Photo> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     callback.onSuccess(response.body());
                 } else {
-                    callback.onError("Nie udalo sie dodac zdjecia");
+                    callback.onError("Nie udało się dodać zdjęcia");
                 }
             }
 
             @Override
             public void onFailure(Call<Photo> call, Throwable t) {
-                callback.onError(t.getMessage() != null ? t.getMessage() : "Blad sieci");
+                callback.onError(t.getMessage() != null ? t.getMessage() : "Błąd sieci");
             }
         });
     }

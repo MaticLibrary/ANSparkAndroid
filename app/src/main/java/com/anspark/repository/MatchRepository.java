@@ -75,34 +75,35 @@ public class MatchRepository {
             }
         });
     }
-
-    public void sendDecision(Profile profile, boolean liked, RepositoryCallback<Match> callback) {
-        if (Constants.USE_MOCK_DATA) {
-            Match match = new Match();
-            match.setProfile(profile);
-            match.setLiked(liked);
-            callback.onSuccess(match);
-            return;
-        }
-
-        Map<String, Object> decision = new HashMap<>();
-        decision.put("profile_id", profile.getId());
-        decision.put("liked", liked);
-
-        api.sendDecision(decision).enqueue(new Callback<Match>() {
-            @Override
-            public void onResponse(Call<Match> call, Response<Match> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    callback.onSuccess(response.body());
-                } else {
-                    callback.onError("Nie udalo sie wysac decyzji");
-                }
-            }
-
-            @Override
-            public void onFailure(Call<Match> call, Throwable t) {
-                callback.onError(t.getMessage() != null ? t.getMessage() : "Blad sieci");
-            }
-        });
-    }
 }
+
+//    public void sendDecision(Profile profile, boolean liked, RepositoryCallback<Match> callback) {
+//        if (Constants.USE_MOCK_DATA) {
+//            Match match = new Match();
+//            match.setProfile(profile);
+//            match.setLiked(liked);
+//            callback.onSuccess(match);
+//            return;
+//        }
+//
+//        Map<String, Object> decision = new HashMap<>();
+//        decision.put("profile_id", profile.getId());
+//        decision.put("liked", liked);
+//
+//        api.sendDecision(decision).enqueue(new Callback<Match>() {
+//            @Override
+//            public void onResponse(Call<Match> call, Response<Match> response) {
+//                if (response.isSuccessful() && response.body() != null) {
+//                    callback.onSuccess(response.body());
+//                } else {
+//                    callback.onError("Nie udalo sie wysac decyzji");
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<Match> call, Throwable t) {
+//                callback.onError(t.getMessage() != null ? t.getMessage() : "Blad sieci");
+//            }
+//        });
+//    }
+//}

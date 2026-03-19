@@ -53,13 +53,7 @@ public class EditProfileActivity extends AppCompatActivity {
         finishButton.setOnClickListener(v -> {
             Profile profile = new Profile();
             if (name != null) {
-                profile.setName(name);
-            }
-            if (age != null) {
-                try {
-                    profile.setAge(Integer.parseInt(age));
-                } catch (NumberFormatException ignored) {
-                }
+                profile.setDisplayName(name);
             }
             profile.setBio(bioInput.getText().toString().trim());
             viewModel.updateProfile(profile);

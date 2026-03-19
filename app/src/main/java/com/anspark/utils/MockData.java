@@ -9,7 +9,6 @@ import com.anspark.models.Profile;
 import com.anspark.models.User;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -23,17 +22,21 @@ public final class MockData {
 
     public static AuthResponse sampleAuthResponse() {
         User user = new User("user_1", "Adrian", "adrian@anspark.com");
-        return new AuthResponse("mock_access_token", "mock_refresh_token", user);
+        AuthResponse response = new AuthResponse();
+        response.setToken("mock_access_token");
+        response.setUserId("user_1");
+        response.setEmail("adrian@anspark.com");
+        response.setProfile(sampleProfile());
+        return response;
     }
 
     public static Profile sampleProfile() {
         Profile profile = new Profile();
-        profile.setId("profile_me");
-        profile.setName("Adrian");
+        profile.setId(1L);
+        profile.setDisplayName("Adrian");
         profile.setAge(27);
         profile.setCity("Warszawa");
-        profile.setBio("Frontend, silownia, fotografia analogowa.");
-        profile.setTags(Arrays.asList("Tech", "Silownia", "Fotografia"));
+        profile.setBio("Frontend, siłownia, fotografia analogowa.");
 
         List<Photo> photos = new ArrayList<>();
         photos.add(new Photo(id("photo"), "local://male_profile", true));
@@ -46,23 +49,27 @@ public final class MockData {
         List<Profile> profiles = new ArrayList<>();
 
         Profile maja = new Profile();
-        maja.setId("profile_maja");
-        maja.setName("Maja");
+        maja.setId(2L);
+        maja.setDisplayName("Maja");
         maja.setAge(24);
-        maja.setBio("Uwielbiam gory, analogowe zdjecia i nocne spacery po miescie.");
+        maja.setBio("Uwielbiam góry, analogowe zdjęcia i nocne spacery po mieście.");
         maja.setCity("Krakow");
-        maja.setTags(Arrays.asList("Gory", "Kino", "Podroze"));
-        maja.setPhotos(Arrays.asList(new Photo(id("photo"), "local://female_profile_1", true)));
+
+        List<Photo> majaPhotos = new ArrayList<>();
+        majaPhotos.add(new Photo(id("photo"), "local://female_profile_1", true));
+        maja.setPhotos(majaPhotos);
         profiles.add(maja);
 
         Profile kasia = new Profile();
-        kasia.setId("profile_kasia");
-        kasia.setName("Kasia");
+        kasia.setId(3L);
+        kasia.setDisplayName("Kasia");
         kasia.setAge(26);
-        kasia.setBio("Biegam o poranku, lubie kino i szukam kogos z dobra energia.");
+        kasia.setBio("Biegam o poranku, lubię kino i szukam kogoś z dobrą energią.");
         kasia.setCity("Poznan");
-        kasia.setTags(Arrays.asList("Bieganie", "Kino", "Kawa"));
-        kasia.setPhotos(Arrays.asList(new Photo(id("photo"), "local://female_profile_2", true)));
+
+        List<Photo> kasiaPhotos = new ArrayList<>();
+        kasiaPhotos.add(new Photo(id("photo"), "local://female_profile_2", true));
+        kasia.setPhotos(kasiaPhotos);
         profiles.add(kasia);
 
         return profiles;
@@ -71,7 +78,12 @@ public final class MockData {
     public static List<Match> sampleMatches() {
         List<Match> matches = new ArrayList<>();
         for (Profile profile : sampleDiscoverProfiles()) {
-            matches.add(new Match("match_" + profile.getId(), profile, true, "now"));
+            Match match = new Match();
+            match.setId("match_" + profile.getId());
+            match.setProfile(profile);
+            match.setLiked(true);
+            match.setMatchedAt("now");
+            matches.add(match);
         }
         return matches;
     }
@@ -80,23 +92,37 @@ public final class MockData {
         List<Chat> chats = new ArrayList<>();
 
         Profile maja = new Profile();
-        maja.setId("profile_maja");
-        maja.setName("Maja");
+        maja.setId(2L);
+        maja.setDisplayName("Maja");
         maja.setAge(24);
-        maja.setPhotos(Arrays.asList(new Photo(id("photo"), "local://female_profile_1", true)));
+
+        List<Photo> majaPhotos = new ArrayList<>();
+        majaPhotos.add(new Photo(id("photo"), "local://female_profile_1", true));
+        maja.setPhotos(majaPhotos);
 
         Message lastMaja = new Message(id("msg"), "chat_maja", "profile_maja", "Jutro po 18:00 mam wolne, pasuje Ci?", "09:12", false);
-        Chat chatMaja = new Chat("chat_maja", maja, lastMaja, "09:12");
+        Chat chatMaja = new Chat();
+        chatMaja.setId("chat_maja");
+        chatMaja.setParticipant(maja);
+        chatMaja.setLastMessage(lastMaja);
+        chatMaja.setLastMessageAt("09:12");
         chats.add(chatMaja);
 
         Profile kasia = new Profile();
-        kasia.setId("profile_kasia");
-        kasia.setName("Kasia");
+        kasia.setId(3L);
+        kasia.setDisplayName("Kasia");
         kasia.setAge(26);
-        kasia.setPhotos(Arrays.asList(new Photo(id("photo"), "local://female_profile_2", true)));
 
-        Message lastKasia = new Message(id("msg"), "chat_kasia", "profile_kasia", "Dzieki za super rozmowe wczoraj.", "Wczoraj", false);
-        Chat chatKasia = new Chat("chat_kasia", kasia, lastKasia, "Wczoraj");
+        List<Photo> kasiaPhotos = new ArrayList<>();
+        kasiaPhotos.add(new Photo(id("photo"), "local://female_profile_2", true));
+        kasia.setPhotos(kasiaPhotos);
+
+        Message lastKasia = new Message(id("msg"), "chat_kasia", "profile_kasia", "Dzięki za super rozmowę wczoraj.", "Wczoraj", false);
+        Chat chatKasia = new Chat();
+        chatKasia.setId("chat_kasia");
+        chatKasia.setParticipant(kasia);
+        chatKasia.setLastMessage(lastKasia);
+        chatKasia.setLastMessageAt("Wczoraj");
         chats.add(chatKasia);
 
         return chats;
@@ -104,9 +130,9 @@ public final class MockData {
 
     public static List<Message> sampleMessages(String chatId) {
         List<Message> messages = new ArrayList<>();
-        messages.add(new Message(id("msg"), chatId, "profile_maja", "Czesc! Widzialam, ze tez lubisz trekking.", "09:10", false));
-        messages.add(new Message(id("msg"), chatId, "user_1", "Tak, najczesciej wypady w gory na weekend.", "09:11", true));
-        messages.add(new Message(id("msg"), chatId, "profile_maja", "Super! To moze kawa i plan na mini wyjazd?", "09:12", false));
+        messages.add(new Message(id("msg"), chatId, "profile_maja", "Cześć! Widziałam, że też lubisz trekking.", "09:10", false));
+        messages.add(new Message(id("msg"), chatId, "user_1", "Tak, najczęściej wypady w góry na weekend.", "09:11", true));
+        messages.add(new Message(id("msg"), chatId, "profile_maja", "Super! To może kawa i plan na mini wyjazd?", "09:12", false));
         return messages;
     }
 }

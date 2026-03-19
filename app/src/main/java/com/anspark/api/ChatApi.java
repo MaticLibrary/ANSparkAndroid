@@ -2,22 +2,14 @@ package com.anspark.api;
 
 import com.anspark.models.Chat;
 import com.anspark.models.Message;
-
 import java.util.List;
-
 import retrofit2.Call;
-import retrofit2.http.Body;
-import retrofit2.http.GET;
-import retrofit2.http.POST;
-import retrofit2.http.Path;
+import retrofit2.http.*;
 
 public interface ChatApi {
-    @GET("chats")
-    Call<List<Chat>> getChats();
-
-    @GET("matches/{matchId}/messages")
+    @GET("api/v1/matches/{matchId}/messages")    // ← змінити
     Call<List<Message>> getMessages(@Path("matchId") long matchId);
 
-    @POST("matches/{matchId}/messages")
+    @POST("api/v1/matches/{matchId}/messages")   // ← змінити
     Call<Message> sendMessage(@Path("matchId") long matchId, @Body String content);
 }

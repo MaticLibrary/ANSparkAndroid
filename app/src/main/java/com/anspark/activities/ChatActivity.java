@@ -3,6 +3,7 @@ package com.anspark.activities;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -13,14 +14,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.anspark.R;
 import com.anspark.adapters.MessagesAdapter;
-import com.anspark.viewmodel.MessageViewModel;  // ← ВИПРАВЛЕНО!
+import com.anspark.utils.ImageUtils;
+import com.anspark.viewmodel.MessageViewModel;
 import com.google.android.material.button.MaterialButton;
 
 public class ChatActivity extends AppCompatActivity {
 
     private MessagesAdapter adapter;
     private LinearLayoutManager layoutManager;
-    private MessageViewModel viewModel;  // ← ВИПРАВЛЕНО!
+    private MessageViewModel viewModel;
     private Long chatId;
 
     @Override
@@ -28,6 +30,7 @@ public class ChatActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
 
+        ImageView chatAvatar = findViewById(R.id.chatAvatar);
         TextView chatTitle = findViewById(R.id.chatTitle);
         TextView chatStatus = findViewById(R.id.chatStatus);
         EditText inputMessage = findViewById(R.id.inputMessage);
@@ -36,6 +39,8 @@ public class ChatActivity extends AppCompatActivity {
 
         String name = getIntent().getStringExtra("chat_name");
         String chatIdStr = getIntent().getStringExtra("chat_id");
+        String participantName = extractParticipantName(name);
+
         if (chatIdStr == null || chatIdStr.isEmpty()) {
             chatId = 0L;
         } else {
@@ -45,19 +50,24 @@ public class ChatActivity extends AppCompatActivity {
                 chatId = 0L;
             }
         }
+
         if (name == null || name.isEmpty()) {
             name = "Maja, 24";
         }
+
+        chatAvatar.setImageResource(ImageUtils.pickChatPlaceholder(
+                !TextUtils.isEmpty(chatIdStr) ? chatIdStr : name
+        ));
         chatTitle.setText(name);
-        chatStatus.setText("online");
+        chatStatus.setText("Online teraz");
 
         layoutManager = new LinearLayoutManager(this);
         layoutManager.setStackFromEnd(true);
         messagesList.setLayoutManager(layoutManager);
-        adapter = new MessagesAdapter();
+        adapter = new MessagesAdapter(participantName, chatIdStr);
         messagesList.setAdapter(adapter);
 
-        viewModel = new ViewModelProvider(this).get(MessageViewModel.class);  // ← ВИПРАВЛЕНО!
+        viewModel = new ViewModelProvider(this).get(MessageViewModel.class);
 
         viewModel.getMessages().observe(this, messages -> {
             adapter.submitList(messages);
@@ -82,5 +92,15 @@ public class ChatActivity extends AppCompatActivity {
             inputMessage.setText("");
             viewModel.sendMessage(chatId, message);
         });
+    }
+
+    private String extractParticipantName(String fullName) {
+        if (TextUtils.isEmpty(fullName)) {
+            return "Match";
+        }
+
+        String[] parts = fullName.split(",");
+        String shortName = parts.length > 0 ? parts[0].trim() : fullName.trim();
+        return shortName.isEmpty() ? "Match" : shortName;
     }
 }

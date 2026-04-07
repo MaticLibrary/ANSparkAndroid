@@ -47,16 +47,25 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
     public void onBindViewHolder(@NonNull ChatViewHolder holder, int position) {
         Chat chat = items.get(position);
 
-        // ← ВИПРАВЛЕНО: getName() → getDisplayName()
-        String name = chat.getParticipant() != null ?
-                chat.getParticipant().getDisplayName() : "Chat";
+        String name = chat.getParticipant() != null
+                ? chat.getParticipant().getDisplayName()
+                : "Chat";
 
         if (chat.getParticipant() != null && chat.getParticipant().getAge() > 0) {
             name = name + ", " + chat.getParticipant().getAge();
         }
+
+        String preview = chat.getLastMessage() != null && chat.getLastMessage().getText() != null
+                && !chat.getLastMessage().getText().trim().isEmpty()
+                ? chat.getLastMessage().getText().trim()
+                : "Nowa rozmowa. Napisz pierwsza wiadomosc.";
+        String timestamp = chat.getLastMessageAt() != null && !chat.getLastMessageAt().trim().isEmpty()
+                ? chat.getLastMessageAt().trim()
+                : "Nowy match";
+
         holder.name.setText(name);
-        holder.message.setText(chat.getLastMessage() != null ? chat.getLastMessage().getText() : "");
-        holder.time.setText(chat.getLastMessageAt() != null ? chat.getLastMessageAt() : "");
+        holder.message.setText(preview);
+        holder.time.setText(timestamp);
         holder.avatar.setImageResource(ImageUtils.pickChatPlaceholder(chat.getId()));
 
         holder.itemView.setOnClickListener(v -> {

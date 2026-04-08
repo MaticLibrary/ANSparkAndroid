@@ -1,0 +1,71 @@
+PODSUMOWANIE ZMIAN CHAT - ANSparkAndroid
+
+1. EKRAN ROZMOWY
+- Przebudowany wyglad activity_chat.xml.
+- Dodany nowoczesny header, odswiezony input i przycisk wysylki.
+- Caly ekran czatu ma bardziej elegancki, premium styl.
+
+2. UKLAD WIADOMOSCI A / B
+- Wiadomosci sa rozdzielone na dwie strony:
+  * swoje wiadomosci po prawej
+  * wiadomosci od drugiej osoby po lewej
+- Dodane osobne layouty:
+  * item_message.xml
+  * item_message_outgoing.xml
+- Dodane osobne style belek, avatarow i dymkow.
+
+3. LOGIKA ROZPOZNAWANIA SWOICH WIADOMOSCI
+- Poprawiona logika w ChatRepository.java.
+- Wiadomosci sa normalizowane na podstawie:
+  * senderId
+  * userId z SessionManager
+- Dzieki temu swoje wiadomosci trafiaja na prawa strone nawet wtedy,
+  gdy backend nie ustawi pola outgoing idealnie.
+
+4. LISTA CHATOW
+- Lista rozmow korzysta teraz z podsumowan chatow zamiast tylko z matchy.
+- Dodane pobieranie listy chatow z endpointu:
+  * api/v1/chats
+  * fallback: api/chats
+- Match i chat summary sa laczone po uczestniku rozmowy.
+
+5. CO WIDAC NA LISCIE CHATOW
+- Nazwa uzytkownika
+- Zdjecie / avatar uzytkownika
+- Ostatnia wyslana wiadomosc
+- Czas ostatniej wiadomosci
+- Prefiks "Ty:" dla swojej ostatniej wiadomosci
+
+6. NIEODCZYTANE WIADOMOSCI
+- Dodane wyroznienie nieodczytanych rozmow:
+  * pogrubiona nazwa
+  * pogrubiona ostatnia wiadomosc
+  * mocniejszy czas
+  * kropka unread
+- Aktualnie stan unread liczony jest jako fallback:
+  jesli ostatnia wiadomosc jest od drugiej osoby, rozmowa jest traktowana
+  jako nieodczytana.
+- Jesli backend doda osobne pole read/unread, mozna to latwo podmienic 1:1.
+
+7. GLOWNE PLIKI ZMIENIONE
+- app/src/main/java/com/anspark/activities/ChatActivity.java
+- app/src/main/java/com/anspark/adapters/MessagesAdapter.java
+- app/src/main/java/com/anspark/adapters/ChatAdapter.java
+- app/src/main/java/com/anspark/repository/ChatRepository.java
+- app/src/main/java/com/anspark/fragments/ChatListFragment.java
+- app/src/main/java/com/anspark/viewmodel/ChatListViewModel.java
+- app/src/main/java/com/anspark/api/ChatApi.java
+- app/src/main/java/com/anspark/utils/ImageUtils.java
+- app/src/main/res/layout/activity_chat.xml
+- app/src/main/res/layout/item_message.xml
+- app/src/main/res/layout/item_message_outgoing.xml
+- app/src/main/res/layout/item_chat.xml
+- app/src/main/res/layout/fragment_chat_list.xml
+- app/src/main/res/values/colors.xml
+- app/src/main/res/drawable/bg_chat_*.xml
+- app/src/main/res/drawable/bg_bubble_incoming.xml
+- app/src/main/res/drawable/bg_bubble_outgoing.xml
+- app/src/main/res/drawable/ic_send.xml
+
+8. WERYFIKACJA
+- Projekt kompiluje sie poprawnie: assembleDebug OK
